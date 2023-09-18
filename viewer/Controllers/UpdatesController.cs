@@ -97,6 +97,7 @@ namespace viewer.Controllers
             var gridEvent =
                 JsonConvert.DeserializeObject<List<GridEvent<Dictionary<string, string>>>>(jsonContent)
                     .First();
+            gridEvent.Id = gridEvent.Id + gridEvent.EventType;
             gridEvent.Id = gridEvent.Id.Replace("/", String.Empty).Replace(".", String.Empty);
 
             await this._hubContext.Clients.All.SendAsync(
@@ -123,6 +124,7 @@ namespace viewer.Controllers
                 // Invoke a method on the clients for 
                 // an event grid notiification.                        
                 var details = JsonConvert.DeserializeObject<GridEvent<dynamic>>(e.ToString());
+                details.Id = details.Id + details.EventType;
                 details.Id = details.Id.Replace("/", String.Empty).Replace(".", String.Empty);
                 
                 await this._hubContext.Clients.All.SendAsync(
